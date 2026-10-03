@@ -1,0 +1,15 @@
+{
+  "name": "sistema-gerenciamento-clientes-api",
+  "version": "1.0.0",
+  "description": "API do Sistema de Gerenciamento de Clientes",
+  "license": "ISC",
+  "author": "Marcelino",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
