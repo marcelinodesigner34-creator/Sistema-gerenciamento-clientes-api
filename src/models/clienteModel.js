@@ -17,4 +17,11 @@ const buscar = async (termo)=>{
     return resultado.rows;
 };
 
-module.exports ={listar, cadastrar, buscar};
+const editar = async (id, nome, cpf, telefone, email, endereco, data_nascimento) =>{
+    const resultado = await pool.query("UPDATE clientes SET nome = $1, cpf = $2, telefone = $3, email= $4, endereco = $5, data_nascimento = $6 WHERE id = $7 RETURNING *",
+        [nome, cpf, telefone, email, endereco, data_nascimento, id]
+    );
+    return resultado.rows[0]
+}
+
+module.exports ={listar, cadastrar, buscar, editar};
