@@ -4,4 +4,10 @@ const listar = async ()=>{
     return resultado.rows;
 };
 
-module.exports ={listar};
+const cadastrar = async (nome, cpf, telefone, email, endereco, data_nascimento)=>{
+    const resultado = await pool.query("INSERT INTO clientes (nome, cpf, telefone, email, endereco, data_nascimento) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [nome, cpf, telefone, email, endereco, data_nascimento]
+    );
+    return resultado.rows[0];
+}
+
+module.exports ={listar, cadastrar};
