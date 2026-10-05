@@ -72,5 +72,23 @@ const editar = async (req, res)=>{
     }
 
 }
-    
-module.exports = { listar, cadastrar, buscar, editar };
+ 
+const excluir = async (req, res)=>{
+    try{
+        const {id} = req.params;
+
+        const cliente = await clienteModel.excluir(id)
+
+        if(!cliente){
+            return res.status(404).json({ mensagem: "Cliente não encontrado" });
+        }
+
+        res.json({mensagem: "Cliente excluído com sucesso"});
+    } catch (erro) {
+        console.error(erro.message);
+        res.status(500).json({ mensagem: "Erro ao excluir cliente" });
+    }
+    }
+
+
+module.exports = { listar, cadastrar, buscar, editar, excluir };
