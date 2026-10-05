@@ -10,4 +10,11 @@ const cadastrar = async (nome, cpf, telefone, email, endereco, data_nascimento)=
     return resultado.rows[0];
 }
 
-module.exports ={listar, cadastrar};
+const buscar = async (termo)=>{
+    const resultado = await pool.query("SELECT id, nome, cpf, telefone FROM clientes WHERE nome ILIKE $1 OR cpf ILIKE $1 ORDER BY nome", [`%${termo}%`]
+
+    );
+    return resultado.rows;
+};
+
+module.exports ={listar, cadastrar, buscar};

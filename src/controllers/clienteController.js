@@ -15,7 +15,7 @@ const cadastrar = async (req, res) => {
         if (!nome) {
             return res.status(400).json({ mensagem: "O campo nome é obrigatório" });
         }
-        if (!cpf){
+        if (!cpf) {
             return res.status(400).json({ mensagem: "O campo cpf é obrigatório" });
         }
         const cliente = await clienteModel.cadastrar(nome, cpf, telefone, email, endereco, data_nascimento)
@@ -25,9 +25,24 @@ const cadastrar = async (req, res) => {
         if (erro.code === "23505") {
             return res.status(409).json({ mensagem: "CPF já cadastrado no sistema" });
         }
-          console.error(erro.message);
-            res.status(500).json({ mensagem: "Erro ao cadastrar clientes" });
+        console.error(erro.message);
+        res.status(500).json({ mensagem: "Erro ao cadastrar clientes" });
     }
 
 }
-module.exports = { listar, cadastrar };
+
+const buscar = async (req, res) => {
+    try {
+        const { termo } = req.query;
+        if (!termo) {
+            return res.status(400).json({ mensagem: "Informe o termo de busca" })
+        }
+        const cliente = await clienteModel.buscar(termo)
+        res.json(cliente)
+    }
+    catch (erro) {
+        console.error(erro.message);
+        res.status(500).json({ mensagem: "Erro ao buscar clientes" })
+    }
+}
+module.exports = { listar, cadastrar, buscar };
