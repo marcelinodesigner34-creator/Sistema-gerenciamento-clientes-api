@@ -90,5 +90,19 @@ const excluir = async (req, res)=>{
     }
     }
 
+    const buscarPorId = async (req, res) =>{
+    try{
+        const {id}= req.params;
 
-module.exports = { listar, cadastrar, buscar, editar, excluir };
+        const cliente = await clienteModel.buscarPorId(id);
+        if(!cliente){
+             return res.status(404).json({ mensagem: "Cliente não encontrado" });
+        }
+         res.json(cliente);
+    }catch (erro) {
+        console.error(erro.message);
+        res.status(500).json({ mensagem: "Erro ao buscar  cliente" });
+    }
+}
+
+module.exports = { listar, cadastrar, buscar, editar, excluir, buscarPorId };

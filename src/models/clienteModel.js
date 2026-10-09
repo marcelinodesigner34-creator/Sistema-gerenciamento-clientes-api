@@ -28,4 +28,9 @@ const excluir = async (id) =>{
     const resultado = await pool.query("DELETE FROM clientes WHERE id = $1 RETURNING *", [id]);
     return resultado.rows[0]
 }
-module.exports ={listar, cadastrar, buscar, editar, excluir};
+
+const buscarPorId = async (id)=>{
+    const resultado = await pool.query("SELECT * FROM clientes WHERE id = $1", [id]);
+    return resultado.rows[0];
+}
+module.exports ={listar, cadastrar, buscar, editar, excluir, buscarPorId};

@@ -6,6 +6,7 @@ router.post("/", clienteController.cadastrar);
 router.get("/buscar", clienteController.buscar);
 router.put("/:id", clienteController.editar);
 router.delete("/:id", clienteController.excluir)
+router.get("/:id", clienteController.buscarPorId);
 
 
 module.exports = router;
