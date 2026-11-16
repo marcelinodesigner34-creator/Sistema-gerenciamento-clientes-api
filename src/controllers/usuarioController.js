@@ -10,4 +10,21 @@ const listar = async (req, res) =>{
 
 };
 
-module.exports ={listar};
+
+
+    const buscarPorId = async (req, res) =>{
+    try{
+        const {id}= req.params;
+
+        const usuario = await usuarioModel.buscarPorId(id);
+        if(!usuario){
+             return res.status(404).json({ mensagem: "Usuário não encontrado" });
+        }
+         res.json(usuario);
+    }catch (erro) {
+        console.error(erro.message);
+        res.status(500).json({ mensagem: "Erro ao buscar usuário" });
+    }
+}
+
+module.exports ={listar, buscarPorId}
