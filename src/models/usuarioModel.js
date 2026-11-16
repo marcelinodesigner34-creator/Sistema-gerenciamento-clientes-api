@@ -6,4 +6,10 @@ const buscarPorEmail = async (email) =>{
     );
     return resultado.rows[0];
 };
-module.exports = {buscarPorEmail};
+
+const listar = async () =>{
+    const resultado = await pool.query("SELECT id, nome, email, tipo FROM usuarios ORDER BY nome");
+    return resultado.rows
+}
+
+module.exports = {buscarPorEmail, listar}
