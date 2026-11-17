@@ -52,4 +52,30 @@ const cadastrar = async (req, res) => {
 
 }
 
-module.exports = { listar, buscarPorId, cadastrar }
+const editar = async (req, res)=>{
+   try {
+    const {id} = req.params;
+    const {nome, email, senha, tipo}= req.body;
+
+    if(!nome || !email || !tipo){
+        return res.status(400).json({mensagem: "Preencha nome, e-mail e tipo"});
+    }
+
+    const senhaHash = senha ? await bcrypt.hash(senha, 10): null;
+    const usuario = await usuarioModel.editar(id, nome, email, senhaHash, tipo);
+
+    if(!usuario){
+    return res.status(404).json({mensagem: "Usuário não encontrado"})
+    }
+    res.json(usuario);
+
+    } catch (erro){
+        if(erro.code ==="23505"){
+            return res.status(409).json({mensagem: "E-mail já cadastrado no sistema"});
+        }
+        console.error(erro.message);
+        res.status(500).json({mensagem: "Erro ao editar usuário"});
+    }
+};
+
+module.exports = { listar, buscarPorId, cadastrar, editar }
