@@ -19,4 +19,8 @@ const buscarPorId= async (id)=>{
     return resultado.rows[0];
 };
 
-module.exports = {buscarPorEmail, listar, buscarPorId}
+const cadastrar = async(nome, email, senha, tipo) =>{
+    const resultado = await pool.query("INSERT INTO usuarios(nome, email, senha, tipo) VALUES($1, $2, $3, $4) RETURNING id, nome, email, tipo", [nome, email, senha, tipo]);
+    return resultado.rows[0];
+};
+module.exports = {buscarPorEmail, listar, buscarPorId, cadastrar}

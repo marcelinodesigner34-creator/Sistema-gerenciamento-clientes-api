@@ -3,5 +3,6 @@ const usuarioController= require("../controllers/usuarioController")
 const router = express.Router();
 router.get("/", usuarioController.listar)
 router.get("/:id", usuarioController.buscarPorId)
+router.post("/", usuarioController.cadastrar)
 
 module.exports =router;
