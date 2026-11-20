@@ -31,5 +31,14 @@ const editar = async (id, nome, email, senha, tipo)=>{
 
 }
 
+const excluir = async (id)=>{
+    const resultado = await pool.query("DELETE FROM usuarios WHERE id = $1 RETURNUING id, nome, email, tipo", [id]);
+    return resultado.rows[0]
+}
 
-module.exports = {buscarPorEmail, listar, buscarPorId, cadastrar, editar}
+const contarAdministradores = async ()=>{
+    const resultado = await pool.query("SELECT COUNT(*) AS total FROM usuarips WEHERE tipo = 'administrador'")
+    return Number(resultado.rows[0].total)
+}
+
+module.exports = {buscarPorEmail, listar, buscarPorId, cadastrar, editar, excluir, contarAdministradores}

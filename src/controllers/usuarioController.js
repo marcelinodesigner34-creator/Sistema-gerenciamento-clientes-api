@@ -78,4 +78,33 @@ const editar = async (req, res)=>{
     }
 };
 
-module.exports = { listar, buscarPorId, cadastrar, editar }
+const excluir = async (req, res) => {
+    try{
+        const {id} = req.params
+        const {logadoId} = req.query 
+
+        if(Number (id) === Number(logadoId)){
+            return res.status(400).json({mensagem: "Não é possível remover o usuário atualmente logado"})
+        }
+        const usuario = await usuarioModel.buscarPorId(id);
+
+        if(!usuario){
+            return res.status(404).json ({mensagem: "Usuário não encontrado"})
+        }
+
+        if(usuario.tipo === "administrador"){
+            const totalAdmins = await usuarioModel.contarAdministradores();
+
+            if(totalAdmins <= 1){
+                return res.status(400).json ({ mensagem: "É necessário manter ao menos um administrador cadastrado" });
+            }
+        }
+        await usuarioModel.excluir(id);
+        res.json ({ mensagem: "Usuário removido com sucesso" });
+    } catch (erro){
+        console.error(erro.message);
+        res.status(500).json ({ mensagem: "Erro ao remover usuário" });
+    }
+}
+
+module.exports = { listar, buscarPorId, cadastrar, editar, excluir }

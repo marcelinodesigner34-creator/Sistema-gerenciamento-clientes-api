@@ -5,5 +5,6 @@ router.get("/", usuarioController.listar)
 router.get("/:id", usuarioController.buscarPorId)
 router.post("/", usuarioController.cadastrar)
 router.put("/:id", usuarioController.editar)
+router.delete("/:id", usuarioController.excluir)
 
 module.exports =router;
