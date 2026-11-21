@@ -13,17 +13,17 @@ const cadastrar = async (req, res) => {
     try {
         const { nome, cpf, telefone, email, endereco, data_nascimento } = req.body;
         if (!nome) {
-            return res.status(400).json({ mensagem: "O campo nome é obrigatório" });
+            return res.status(400).json({ mensagem: "O campo nome é obrigatório", campo: "nome" });
         }
         if (!cpf) {
-            return res.status(400).json({ mensagem: "O campo cpf é obrigatório" });
+            return res.status(400).json({ mensagem: "O campo cpf é obrigatório", campo: "cpf" });
         }
         const cliente = await clienteModel.cadastrar(nome, cpf, telefone, email, endereco, data_nascimento)
 
         res.status(201).json(cliente);
     } catch (erro) {
         if (erro.code === "23505") {
-            return res.status(409).json({ mensagem: "CPF já cadastrado no sistema" });
+            return res.status(409).json({ mensagem: "CPF já cadastrado no sistema", campo: "cpf" });
         }
         console.error(erro.message);
         res.status(500).json({ mensagem: "Erro ao cadastrar clientes" });

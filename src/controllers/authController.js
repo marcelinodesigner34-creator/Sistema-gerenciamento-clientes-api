@@ -4,8 +4,12 @@ const usuarioModel = require("../models/usuarioModel");
 const login = async (req, res)=>{
     try{
         const {email, senha} = req.body;
-        if(!email || !senha){
-            return res.status(400).json({mensagem: "Informe e-mail e senha"});
+        if(!email){
+            return res.status(400).json({mensagem: "Informe o e-mail", campo:"email"});
+        }
+
+          if(!senha){
+            return res.status(400).json({mensagem: "Informe a senha", campo: "senha"});
         }
         const usuario = await usuarioModel.buscarPorEmail(email);
         if(!usuario){

@@ -32,11 +32,20 @@ const cadastrar = async (req, res) => {
     try {
         const { nome, email, senha, tipo } = req.body;
 
-        if (!nome || !email || !senha) {
-            return res.status(400).json({ mensagem: "Preencha nome, e-mail e senha" });
+        if (!nome) {
+            return res.status(400).json({ mensagem: "Informe o nome", campo: "nome" });
         }
+
+        if (!email) {
+            return res.status(400).json({ mensagem: "Informe o e-mail", campo: "email" });
+        }
+
+        if (!senha) {
+            return res.status(400).json({ mensagem: "Informe a senha", campo: "senha" });
+        }
+
         if (!tipo) {
-            return res.status(400).json({ mensagem: "Selecione o tipo de usuário" });
+            return res.status(400).json({ mensagem: "Selecione o tipo de usuário", campo: "tipo" });
         }
 
         const senhaHash = await bcrypt.hash(senha, 10);
@@ -44,67 +53,47 @@ const cadastrar = async (req, res) => {
         res.status(201).json(usuario);
     } catch (erro) {
         if (erro.code === "23505") {
-            return res.status(409).json({ mensagem: "E-mail já cadastrado no sistema" });
+            return res.status(409).json({ mensagem: "E-mail já cadastrado no sistema", campo: "email" });
         }
-        console.error(erro.mensage);
+        console.error(erro.message);
         res.status(500).json({ mensagem: "Erro ao cadastrar usuário" });
     }
 
 }
 
-const editar = async (req, res)=>{
-   try {
-    const {id} = req.params;
-    const {nome, email, senha, tipo}= req.body;
+const editar = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-    if(!nome || !email || !tipo){
-        return res.status(400).json({mensagem: "Preencha nome, e-mail e tipo"});
-    }
+        const { nome, email, senha, tipo } = req.body;
 
-    const senhaHash = senha ? await bcrypt.hash(senha, 10): null;
-    const usuario = await usuarioModel.editar(id, nome, email, senhaHash, tipo);
+        if (!nome) {
+            return res.status(400).json({ mensagem: "Informe o nome", campo: "nome" });
+        }
 
-    if(!usuario){
-    return res.status(404).json({mensagem: "Usuário não encontrado"})
-    }
-    res.json(usuario);
+        if (!email) {
+            return res.status(400).json({ mensagem: "Informe o e-mail", campo: "email" });
+        }
 
-    } catch (erro){
-        if(erro.code ==="23505"){
-            return res.status(409).json({mensagem: "E-mail já cadastrado no sistema"});
+        if (!tipo) {
+            return res.status(400).json({ mensagem: "Selecione o tipo de usuário", campo: "tipo" });
+        }
+
+        const senhaHash = senha ? await bcrypt.hash(senha, 10) : null;
+        const usuario = await usuarioModel.editar(id, nome, email, senhaHash, tipo);
+
+        if (!usuario) {
+            return res.status(404).json({ mensagem: "Usuário não encontrado" })
+        }
+        res.json(usuario);
+
+    } catch (erro) {
+        if (erro.code === "23505") {
+            return res.status(409).json({ mensagem: "E-mail já cadastrado no sistema", campo:"email"});
         }
         console.error(erro.message);
-        res.status(500).json({mensagem: "Erro ao editar usuário"});
+        res.status(500).json({ mensagem: "Erro ao editar usuário" });
     }
 };
 
-const excluir = async (req, res) => {
-    try{
-        const {id} = req.params
-        const {logadoId} = req.query 
-
-        if(Number (id) === Number(logadoId)){
-            return res.status(400).json({mensagem: "Não é possível remover o usuário atualmente logado"})
-        }
-        const usuario = await usuarioModel.buscarPorId(id);
-
-        if(!usuario){
-            return res.status(404).json ({mensagem: "Usuário não encontrado"})
-        }
-
-        if(usuario.tipo === "administrador"){
-            const totalAdmins = await usuarioModel.contarAdministradores();
-
-            if(totalAdmins <= 1){
-                return res.status(400).json ({ mensagem: "É necessário manter ao menos um administrador cadastrado" });
-            }
-        }
-        await usuarioModel.excluir(id);
-        res.json ({ mensagem: "Usuário removido com sucesso" });
-    } catch (erro){
-        console.error(erro.message);
-        res.status(500).json ({ mensagem: "Erro ao remover usuário" });
-    }
-}
-
-module.exports = { listar, buscarPorId, cadastrar, editar, excluir }
+module.exports = { listar, buscarPorId, cadastrar, editar }
