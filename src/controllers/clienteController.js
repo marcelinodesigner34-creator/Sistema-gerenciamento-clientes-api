@@ -11,19 +11,27 @@ const listar = async (req, res) => {
 
 const cadastrar = async (req, res) => {
     try {
-        const { nome, cpf, telefone, email, endereco, data_nascimento } = req.body;
+        const { nome, cpf, telefone, email, endereco, data_nascimento, usuario_id } = req.body;
         if (!nome) {
             return res.status(400).json({ mensagem: "O campo nome é obrigatório", campo: "nome" });
         }
         if (!cpf) {
             return res.status(400).json({ mensagem: "O campo cpf é obrigatório", campo: "cpf" });
         }
-        const cliente = await clienteModel.cadastrar(nome, cpf, telefone, email, endereco, data_nascimento)
+
+        if(!usuario_id){
+            return res.status(400).json ({mensagem: "Usuário responsável não informado"})
+        }
+        const cliente = await clienteModel.cadastrar(nome, cpf, telefone, email, endereco, data_nascimento, usuario_id )
 
         res.status(201).json(cliente);
     } catch (erro) {
         if (erro.code === "23505") {
             return res.status(409).json({ mensagem: "CPF já cadastrado no sistema", campo: "cpf" });
+        }
+
+        if(erro.code === "23503"){
+              return res.status(400).json({ mensagem: "Usuário responsável não encontrado" });
         }
         console.error(erro.message);
         res.status(500).json({ mensagem: "Erro ao cadastrar clientes" });

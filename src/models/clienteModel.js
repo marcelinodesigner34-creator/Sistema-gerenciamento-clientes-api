@@ -4,8 +4,8 @@ const listar = async ()=>{
     return resultado.rows;
 };
 
-const cadastrar = async (nome, cpf, telefone, email, endereco, data_nascimento)=>{
-    const resultado = await pool.query("INSERT INTO clientes (nome, cpf, telefone, email, endereco, data_nascimento) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [nome, cpf, telefone, email, endereco, data_nascimento]
+const cadastrar = async (nome, cpf, telefone, email, endereco, data_nascimento, usuario_id)=>{
+    const resultado = await pool.query("INSERT INTO clientes (nome, cpf, telefone, email, endereco, data_nascimento, usuario_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *", [nome, cpf, telefone, email, endereco, data_nascimento, usuario_id]
     );
     return resultado.rows[0];
 }

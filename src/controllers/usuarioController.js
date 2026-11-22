@@ -122,6 +122,9 @@ const excluir = async (req, res) => {
     await usuarioModel.excluir(id);
     res.json({ mensagem: "Usuário removido com sucesso" });
   } catch (erro) {
+    if(erro.code === "23503"){
+        return res.status(409).json({ mensagem: "Usuário possui clientes cadastrados e não pode ser removido" });
+    }
     console.error(erro.message);
     res.status(500).json({ mensagem: "Erro ao remover usuário" });
   }
