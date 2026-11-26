@@ -255,7 +255,7 @@ Erros gerais não incluem `campo`:
 }
 ```
 
-No código atual, `campo` está presente nas validações obrigatórias do login, do cadastro e da edição de usuários, no e-mail duplicado de usuários e nos erros de nome, CPF e CPF duplicado do cadastro de clientes. A edição de clientes ainda retorna apenas `mensagem`, inclusive nesses erros de formulário. Os erros de usuário responsável no cadastro de clientes também retornam apenas `mensagem`.
+No código atual, `campo` está presente nas validações obrigatórias do login, do cadastro e da edição de usuários, no e-mail duplicado de usuários e nos erros de nome, CPF e CPF duplicado do cadastro e da edição de clientes e na ausência do termo de busca de clientes (`campo`: `termo`). Os erros de usuário responsável no cadastro de clientes também retornam apenas `mensagem`.
 
 ## Códigos de resposta
 
@@ -295,6 +295,17 @@ http://localhost:3000
 
 A porta pode ser alterada pela variável de ambiente `PORT`.
 
+## Testes
+
+Os endpoints da API foram testados no Postman. A coleção de requisições está disponível em [docs/sistema-gerenciamento-clientes.postman_collection.json](docs/sistema-gerenciamento-clientes.postman_collection.json).
+
+Para importar a coleção:
+
+1. Baixe o arquivo da coleção ou utilize a cópia presente no repositório clonado.
+2. Abra o Postman e clique em **Import**.
+3. Escolha o arquivo `docs/sistema-gerenciamento-clientes.postman_collection.json` e confirme a importação.
+4. Com a API em execução, ajuste os endereços, identificadores e dados das requisições conforme o seu ambiente antes de enviá-las.
+
 ## Observações
 
 - As requisições com corpo JSON devem utilizar o cabeçalho `Content-Type: application/json`.
@@ -303,4 +314,4 @@ A porta pode ser alterada pela variável de ambiente `PORT`.
 - As rotas de clientes e usuários não exigem autenticação na implementação documentada.
 - `logadoId` é informado por quem faz a requisição; não é obtido de uma sessão autenticada. Envie o ID correto do usuário logado ao solicitar uma remoção.
 - A proteção do último administrador descrita acima se aplica à exclusão. A edição atual não verifica se a troca de tipo deixará o sistema sem administrador.
-- Esta documentação foi conferida por leitura do código; os exemplos não representam testes executados contra o banco de dados.
+- Endpoints testados no Postman; a coleção está em docs/.
